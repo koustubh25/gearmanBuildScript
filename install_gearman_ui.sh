@@ -6,28 +6,23 @@
 source GLOBAL
 export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
+check_root
+
 cd $GEARMAN_UI_DIR
 
 #check php
-install_program "php" "php"
+if which php>\dev\null; then
+	echo "PHP found."
+else
+	echo "PHP not found. Please install PHP first and then retry this script. Exiting."
+	exit 1;
+fi
 
 echo 'Checking Composer ..'
 if which composer>/dev/null; then
     echo "composer exists"
 else
-	read -e -p "composer not installed. Do you want to install?" -i "y" ans
-	#install composer globally
-	if [ "$ans" == "y" ]; then
-		echo "Checking curl"
-		install_program "curl" "curl"
-		curl -sS ${COMPOSER_URL} | ${PHP_PATH}
-		verify_command $? "Error installing $1"
-		mv composer.phar ${GEARMAN_INSTALL_PREFIX}bin/composer
-		echo "Composer installed globally"
-	else
-		echo "Exiting .."
-		exit 1;
-	fi
+	check_composer
 fi
 
 install_program "git" "git-core"

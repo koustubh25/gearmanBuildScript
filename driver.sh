@@ -8,7 +8,6 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-cd $GEARMAN_BUILD_SCRIPT
 read -e -p "will the Gearman Job server run on this machine?" -i "y" ans 
 if [ "$ans" == "y" ]; then  
 	./install_gearman.sh

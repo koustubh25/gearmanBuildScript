@@ -7,35 +7,33 @@
 source GLOBAL
 
 # check if run as root
-if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
-fi
+check_root
 
+read -p "This script compiles the source code for gearman. Depending on the machine, it could take upto 30 minutes for the script to complete. Press any key to continue." a
 
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
-echo ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
+
 rm -rf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION} ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz
 verify_command $? "Error cleaning up previous Gearman downloads"
 
+cd $GEARMAN_DOWNLOAD_DIR 
+
 echo "This script will now download and install Gearman version ${GEARMAN_VERSION} .."
-echo "Now downloading Gearman from ${GEARMAN_INSTALLABLE} .. "
+printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE} .. "
 
 #Download
-sudo wget -q $GEARMAN_INSTALLABLE -P $GEARMAN_DOWNLOAD_DIR
-verify_command $? "Cannot download source. Please check the path."
 
-
-#Extract
+wget $GEARMAN_INSTALLABLE 
+verify_command $? "Error downloading"
+sleep 5
 printf "Extracting:"
-printf "${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz .. "
-echo "sudo tar -xzf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz"
-tar -xzf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz -C ${GEARMAN_DOWNLOAD_DIR}; 
-verify_command $? "Error untarring .."
+tar -xzf gearmand-${GEARMAN_VERSION}.tar.gz
+verify_command $? "Error downloading and untarring."
+rm -rf gearmand-${GEARMAN_VERSION}.tar.gz
 
 #update repositories
-sudo yum -y update gcc-c++
+yum -y update
 
 #Perisistent QUEUE
 read -p  "Now preparing configration. 
@@ -47,21 +45,21 @@ case $choiceDB in
     "1")
     	install_program "mysql" "mysql" 
 		echo "Now installing necessary libraries for mysql"
-		sudo yum -y install mysql-devel;
-		verify_command $?
+		yum -y install mysql-devel
+		verify_command $? "Error installing mysql-devel"
 		;;
     "2") 
 		install_program "memcached" "memcache"
-		sudo yum -y install memcached libmemcached libmemcached-devel;
+		yum -y install memcached libmemcached libmemcached-devel;
 		verify_command $? "Error installing memcache libraries"
 		;;
 	"3")
 		install_program "mysql" "mysql"
 		echo "Now installing necessary libraries for mysql"
-		sudo yum -y install mysql-devel;
-		verify_command $?
+		yum -y install mysql-devel;
+		verify_command $? "Error installing mysql-devel"
 		install_program "memcached" "memcache"
-		sudo yum -y install memcached libmemcached libmemcached-devel;
+		yum -y install memcached libmemcached libmemcached-devel;
 		verify_command $? "Error installing memcache libraries"
 		;;
 	*) 
@@ -102,7 +100,7 @@ make
 make install
 verify_command $? "Failed to install Gearman.."
 
-#ldconfig
+ldconfig
 
 echo "You can start gearman by runnning the command 'gearmand'. 
 Gearman config file (${GEARMAN_INSTALL_PREFIX}etc/gearmand.conf) or check command line options gearmand -h"

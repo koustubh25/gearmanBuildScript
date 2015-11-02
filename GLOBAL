@@ -1,13 +1,10 @@
 #Gearman
-#GEARMAN_DAEMON=/usr/local/sbin/gearmand
 GEARMAN_INSTALL_PREFIX=/usr/local/
 GEARMAN_VERSION=1.1.12
 GEARMAN_SERIES=1.2
 GEARMAN_INSTALLABLE=https://launchpad.net/gearmand/${GEARMAN_SERIES}/${GEARMAN_VERSION}/+download/gearmand-${GEARMAN_VERSION}.tar.gz 
-#GEARMAN_CONF_FILE=/projects/mv2/deliver/api/conf/gearman.conf
-#GEARMAN_LOG_FILE=/var/log/gearman.log
 GEARMAN_DOWNLOAD_DIR=/usr/var/tmp/
-GEARMAN_BUILD_SCRIPT=/var/tmp/gearmanBuildScript/
+
 
 #Geraman UI
 GEARMAN_UI_DIR=/usr/var/tmp/
@@ -16,9 +13,13 @@ COMPOSER_URL=https://getcomposer.org/installer
 GEARMAN_UI_DOCS=http://gaspaio.github.io/gearmanui
 
 #GEARMAN_MANAGER
-GEARMAN_MANAGER_DIR=/usr/var/tmp/
-GEARMAN_MANAAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
+GEARMAN_MANAGER_DOWNLOAD_DIR=/usr/var/tmp/
+GEARMAN_MANAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
 GEARMAN_MANAGER_MASTER_BRANCH_VERSION=5.5.9
+
+PHP_SOURCE_URL=http://museum.php.net/php5/
+PHP_DOWNLOAD_DIR=/usr/var/tmp/
+PHP_VERSION=5.6.2
 
 #PECL
 PHP_PEAR=http://pear.php.net/go-pear.phar
@@ -44,12 +45,11 @@ verify_command(){
 install_program(){
 	echo "Checking if $1 present .."
 	if which $1>/dev/null; then
-    		echo "$1 exists"
+    		echo "$1 found."
 	else
  		read -e -p "$1 doesn't exist. Do you want to install?" -i "y" ans
  		if [ "$ans" == "y" ];then
  			yum -y install $2
- 			verify_command #? "Error installing $1"
  		else
  			echo "Exiting .."
  			exit 1;
@@ -68,5 +68,34 @@ compare_versions(){
 		fi
 	else
 		echo "new";
+	fi
+}
+
+# check if run as root
+check_root(){
+	if [ "$(id -u)" != "0" ]; then
+   		echo "This script must be run as root" 1>&2
+   		exit 1
+	fi
+}
+
+check_composer(){
+	if which composer>/dev/null; then
+    	echo "composer exists"
+    	return;
+	else
+		read -e -p "composer not installed. Do you want to install?" -i "y" ans
+		#install composer globally
+		if [ "$ans" == "y" ]; then
+			install_program "curl" "curl"
+			curl -sS ${COMPOSER_URL} | php
+			verify_command $? "Error installing $1"
+			mv composer.phar ${GEARMAN_INSTALL_PREFIX}bin/composer
+			echo "Composer installed globally"
+			return;
+		else
+			echo "Cannot cnitnue without composer. Exiting .."
+			exit 1;
+		fi
 	fi
 }

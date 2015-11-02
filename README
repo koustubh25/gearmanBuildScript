@@ -1,0 +1,18 @@
+# Install Gearman and related dependencies
+
+## Prerequisites
+
+All the files in this repo must be kept in the same directory
+
+## GLOBAL
+
+"GLOBAL" file contains the list of global variables and functions used by all the scripts
+
+## driver script
+
+Run the following command inside the source file directory
+
+sudo ./driver.sh
+
+"driver.sh" 
+

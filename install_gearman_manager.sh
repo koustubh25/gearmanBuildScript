@@ -7,27 +7,72 @@
 source GLOBAL
 export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
-cd ${GEARMAN_MANAGER_DIR}
+# check if run as root
+check_root
+
+cd ${GEARMAN_MANAGER_DOWNLOAD_DIR}
 install_program "git" "git-core"
 
 #check php version
-install_program "php" "php"
+if which php>/dev/null; then
+	echo "PHP found."
+else
+	read -e -p "This script needs PHP. Press y to install" -i "y" ans 
+	if [ "$ans" == "y" ]; then
+		./install_php.sh
+	else
+		echo "Exiting .."
+		exit 1;
+	fi
+fi
+
 echo "checking PHP version .."
 PHP_VERSION_FOUND=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+")
 version=$(compare_versions GEARMAN_MANAGER_MASTER_BRANCH_VERSION PHP_VERSION_FOUND)
 
 rm -rf ${GearmanManager}GearmanManager
 
-if [ "$versions" == "new" ];then
-	#clone from master branch
+if [ "$version" == "new" ]; then
 	
-	git clone ${GEARMAN_MANAAGER_SOURCE}
-	composer
+	#clone from master branch	
+	git clone ${GEARMAN_MANAGER_SOURCE}
+	cd GearmanManager
+	check_composer
+	composer install --no-dev
 else
-	git clone -b v2 ${GEARMAN_MANAAGER_SOURCE}
+	#clone v2
+	echo "git clone -b v2 ${GEARMAN_MANAGER_SOURCE}"
+
+	read -e -p "You need pcntl enabled in php to use gearman manager. Press y to continue." -i "y" ans
+
+	if [ "$ans" != "y" ];then
+		exit 1;
+	fi
+
+	cd ${PHP_SOURCE_DIR}
+
+	#Clean previous	
+	rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}
+
+	#Download
+	wget ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz
+
+	#Extract
+	printf "Extracting:"
+	tar -xzf php-${PHP_VERSION_FOUND}.tar.gz
+	verify_command $? "Error untarring php source .."
+
+	#Delete tar ball
+	rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz
+
+	cd php-${PHP_VERSION_FOUND}/ext/pcntl
+	phpize
+	verify_command $? "Error with phpize"
+	./configure
+	verify_command $? "Error configuring php pcntl"
+	make install
+	verify_command $? "Error installing php pcntl"
+
+	echo "Make sure to add pcntl.so in php.ini file"
+
 fi
-
-echo "You need pecl installed to use Gearman Manager. Checking if pecl installed .."
-
-
-	

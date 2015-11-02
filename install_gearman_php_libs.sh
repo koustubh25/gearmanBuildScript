@@ -8,6 +8,9 @@
 source GLOBAL
 export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
+# check if run as root
+check_root
+
 if which pecl>/dev/null; then
 	echo "pecl already installed."
 else
@@ -17,14 +20,17 @@ else
 		verify_command $? "Couldn't install pear"
 		php php-phar
 		verify_command $? "Couldn't install pear"
+		echo "pecl installed successfully"
 	else
 		echo "Exiting."
 		exit ;
 	fi
 fi
 
-echo "pear installed successfully. Now installing gearman PHP libraries"
+echo "Now installing gearman PHP libraries"
+
+yum -y install autoconf
 
 pecl install gearman
 verify_command $? "Error installing PHP gearman libraries"
-echo "Gearman PHP libraries succesfully installed"
+echo "Gearman PHP libraries succesfully installed. Don't forget to add gearman.so in php.ini. Add the absolute path and verify 'php --ini' doesn't throw any errors."
