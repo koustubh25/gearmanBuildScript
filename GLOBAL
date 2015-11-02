@@ -1,0 +1,72 @@
+#Gearman
+#GEARMAN_DAEMON=/usr/local/sbin/gearmand
+GEARMAN_INSTALL_PREFIX=/usr/local/
+GEARMAN_VERSION=1.1.12
+GEARMAN_SERIES=1.2
+GEARMAN_INSTALLABLE=https://launchpad.net/gearmand/${GEARMAN_SERIES}/${GEARMAN_VERSION}/+download/gearmand-${GEARMAN_VERSION}.tar.gz 
+#GEARMAN_CONF_FILE=/projects/mv2/deliver/api/conf/gearman.conf
+#GEARMAN_LOG_FILE=/var/log/gearman.log
+GEARMAN_DOWNLOAD_DIR=/usr/var/tmp/
+GEARMAN_BUILD_SCRIPT=/var/tmp/gearmanBuildScript/
+
+#Geraman UI
+GEARMAN_UI_DIR=/usr/var/tmp/
+GEARMAN_UI_SOURCE=https://github.com/gaspaio/gearmanui.git
+COMPOSER_URL=https://getcomposer.org/installer
+GEARMAN_UI_DOCS=http://gaspaio.github.io/gearmanui
+
+#GEARMAN_MANAGER
+GEARMAN_MANAGER_DIR=/usr/var/tmp/
+GEARMAN_MANAAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
+GEARMAN_MANAGER_MASTER_BRANCH_VERSION=5.5.9
+
+#PECL
+PHP_PEAR=http://pear.php.net/go-pear.phar
+
+RED=`tput setaf 1`
+GREEN=`tput setaf 2`
+NC=`tput sgr0`
+
+ERROR="${RED}error${NC}"
+DONE="${GREEN}done${NC}"
+
+verify_command(){
+	if [ $1 -eq 0 ]; then
+			echo $DONE
+		else
+			echo $ERROR
+			echo $2
+			exit 1;
+		fi
+
+}
+
+install_program(){
+	echo "Checking if $1 present .."
+	if which $1>/dev/null; then
+    		echo "$1 exists"
+	else
+ 		read -e -p "$1 doesn't exist. Do you want to install?" -i "y" ans
+ 		if [ "$ans" == "y" ];then
+ 			yum -y install $2
+ 			verify_command #? "Error installing $1"
+ 		else
+ 			echo "Exiting .."
+ 			exit 1;
+ 		fi
+	fi
+}
+
+compare_versions(){
+	if [ "$1" != "$2" ]; then
+		versions=$(echo -e "$1\n$2" | sort -V)
+		versions=($versions)
+		if [ "${versions[1]}" == "$2" ]; then
+			echo "new"
+		else
+			echo "old";
+		fi
+	else
+		echo "new";
+	fi
+}

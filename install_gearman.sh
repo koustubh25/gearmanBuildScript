@@ -4,20 +4,7 @@
 # Gearman
 ######################################################################
 
-source config
-
-
-verify_command(){
-	if [ $1 -eq 0 ]; then
-			echo $DONE
-		else
-			echo "Failed to install memcache libraries"
-			echo $ERROR
-			echo $2
-			exit 1;
-		fi
-
-}
+source GLOBAL
 
 # check if run as root
 if [ "$(id -u)" != "0" ]; then
@@ -25,9 +12,15 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-echo "This script will now download and install Gearman version ${GEARMAN_VERSION} .."
-printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE} .. "
 
+#Remove if installable exists
+echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
+echo ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
+rm -rf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION} ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz
+verify_command $? "Error cleaning up previous Gearman downloads"
+
+echo "This script will now download and install Gearman version ${GEARMAN_VERSION} .."
+echo "Now downloading Gearman from ${GEARMAN_INSTALLABLE} .. "
 
 #Download
 sudo wget -q $GEARMAN_INSTALLABLE -P $GEARMAN_DOWNLOAD_DIR
@@ -41,6 +34,9 @@ echo "sudo tar -xzf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz"
 tar -xzf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz -C ${GEARMAN_DOWNLOAD_DIR}; 
 verify_command $? "Error untarring .."
 
+#update repositories
+sudo yum -y update gcc-c++
+
 #Perisistent QUEUE
 read -p  "Now preparing configration. 
 Enter you preferred Persistent queue libraries to install(1) 
@@ -49,14 +45,28 @@ Enter you preferred Persistent queue libraries to install(1)
 3. Both " choiceDB
 case $choiceDB in
     "1")
+    	install_program "mysql" "mysql" 
+		echo "Now installing necessary libraries for mysql"
 		sudo yum -y install mysql-devel;
 		verify_command $?
 		;;
-    "2" | "3") 
+    "2") 
+		install_program "memcached" "memcache"
 		sudo yum -y install memcached libmemcached libmemcached-devel;
-		verify_command $? "Error installing memcache librraies"
+		verify_command $? "Error installing memcache libraries"
 		;;
-		*) ;;
+	"3")
+		install_program "mysql" "mysql"
+		echo "Now installing necessary libraries for mysql"
+		sudo yum -y install mysql-devel;
+		verify_command $?
+		install_program "memcached" "memcache"
+		sudo yum -y install memcached libmemcached libmemcached-devel;
+		verify_command $? "Error installing memcache libraries"
+		;;
+	*) 
+		exit 1;
+		;;
 
 esac
 
@@ -73,11 +83,10 @@ configure="${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/configure
 
 if [ $choiceDB -eq 1 ]; then
 	configure="${configure} --disable-libmemcached --with-mysql"; 
-elif [ $choiceDB -eq 2]; then
+elif [ $choiceDB -eq 2 ]; then
 	configure="${configure} --disable-libmemcached --with-libmemcached";
 else
 	configure="${configure} --with-libmemcached --with-mysql"
-	exit 1;
 fi
 
 $configure
@@ -88,13 +97,14 @@ read -p "Press any key" a
 
 echo "Now installing gearman .."
 
-${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/make
-${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/make install
+cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
+make
+make install
+verify_command $? "Failed to install Gearman.."
 
-verify_command $? "Failed to install .."
+#ldconfig
 
 echo "You can start gearman by runnning the command 'gearmand'. 
-Gearman config file (/usr/local/etc/gearmand.conf) or 
-check command line options gearmand -h"
+Gearman config file (${GEARMAN_INSTALL_PREFIX}etc/gearmand.conf) or check command line options gearmand -h"
 
 
