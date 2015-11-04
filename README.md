@@ -26,7 +26,7 @@ The driver.sh file is interactive and you can skip instalation of tools you dont
 
 `./install_gearman_ui.sh` will install [gearman web ui](http://gaspaio.github.io/gearmanui/)
 
-##ToDO
+##ToDo
 
 1. Make an init script for Gearman Manager.
 2. Replace yum update with only the needed packages.
