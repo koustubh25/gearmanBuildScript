@@ -12,14 +12,14 @@ read -p "
 Depending on the machine, it may take upto 60 minutes for the entire driver script to finish executing. Press any key to continue." a
 
 read -e -p "
-Will the Gearman Job server run on this machine? This is necessary even if you wish to use this machine as just a gearman client" -i "y" ans
+Will the Gearman Job server run on this machine? This is necessary even if you wish to use this machine as just a gearman client. " -i "y" ans
 if [ "$ans" == "y" ]; then  
 	./install_gearman.sh
 	verify_command $? "Error installing Gearman"
 fi
 
 read -e -p "
-Do you want to set up Gearman Web UI?(y)" -i "y" ans
+Do you want to set up Gearman Web UI?? " -i "y" ans
 if [ "$ans" == "y" ]; then  
 	./install_gearman_ui.sh 
 	verify_command $? "Error setting up Gearman web ui"
@@ -35,7 +35,7 @@ if [ "$ans" == "y" ]; then
 fi
 
 read -e -p "
-Do you want to install PHP libraries(y)" -i "y" ans
+Do you want to install PHP libraries? " -i "y" ans
 if [ "$ans" == "y" ]; then 
 	./install_gearman_php_libs.sh
 	verify_command $? "Error installing Gearman PHP libraries"
