@@ -18,13 +18,13 @@ The driver.sh file is interactive and you can skip instalation of tools you dont
 
 ##Individual files can also be run in the following manner
 
-`./install_php.sh` will compile and install php alongwith pear, pcntl and mysql extensions as per GLOBAL
+`sudo ./install_php.sh` will compile and install php alongwith pear, pcntl and mysql extensions as per GLOBAL
 
-`./install_gearman.sh` will install gearman version as mentioned in GLOBAL
+`sudo ./install_gearman.sh` will install gearman version as mentioned in GLOBAL
 
-`./install_gearman_manager.sh` will install [Gearman manager](https://github.com/brianlmoon/GearmanManager) based on PHP version present
+`sudo ./install_gearman_manager.sh` will install [Gearman manager](https://github.com/brianlmoon/GearmanManager) based on PHP version present
 
-`./install_gearman_ui.sh` will install [gearman web ui](http://gaspaio.github.io/gearmanui/)
+`sudo ./install_gearman_ui.sh` will install [gearman web ui](http://gaspaio.github.io/gearmanui/)
 
 ##ToDo
 
