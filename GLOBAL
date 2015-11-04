@@ -31,7 +31,7 @@ NC=`tput sgr0`
 ERROR="${RED}error${NC}"
 DONE="${GREEN}done${NC}"
 
-export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
+export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin:${GEARMAN_INSTALL_PREFIX}mysql/bin
 
 verify_command(){
 	if [ $1 -eq 0 ]; then
