@@ -12,7 +12,7 @@ read -p "
 Depending on the machine, it may take upto 60 minutes for the entire driver script to finish executing. Press any key to continue." a
 
 read -e -p "
-Will the Gearman Job server run on this machine?" -i "y" ans
+Will the Gearman Job server run on this machine? This is necessary even if you wish to use this machine as just a gearman client" -i "y" ans
 if [ "$ans" == "y" ]; then  
 	./install_gearman.sh
 	verify_command $? "Error installing Gearman"

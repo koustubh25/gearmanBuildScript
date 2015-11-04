@@ -16,9 +16,9 @@ else
 	read -e -p "pecl not found. Do you want to install?" -i "y" ans
 	rm -rf ${PHP_PEAR}
 	if [ "$ans" == "y" ]; then
-		wget ${PHP_PEAR}
+		wget ${PHP_PEAR} -P $PHP_DOWNLOAD_DIR
 		verify_command $? "Couldn't install pear"
-		php go-pear.phar
+		php ${PHP_DOWNLOAD_DIR}go-pear.phar
 		verify_command $? "Couldn't install pear"
 		echo "pecl installed successfully"
 	else
