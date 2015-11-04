@@ -12,20 +12,20 @@ rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}.tar.gz ${PHP_DOWNLOAD_DIR}php-${PHP
 
 read -e -p "PHP ${PHP_VERSION} will be downloaded and installed. Continue?" -i "y" ans
 if [ "$ans" != "y" ]; then
-	echo "Exiting .."
+	echo "Exiting..."
 	exit 1;
 fi
 
 
 #Download PHP source code
-printf "Downloading PHP source code .." 
+printf "Downloading PHP source code..." 
 wget -q ${PHP_SOURCE_URL}php-${PHP_VERSION}.tar.gz -P ${PHP_DOWNLOAD_DIR}
 verify_command $? "Error downloading PHP source code"
 
 cd ${PHP_DOWNLOAD_DIR}
 
 #untar
-printf "Extracting .."
+printf "Extracting..."
 tar -xzf php-${PHP_VERSION}.tar.gz
 verify_command $? "Error downloading PHP source code"
 

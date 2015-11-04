@@ -3,17 +3,17 @@ GEARMAN_INSTALL_PREFIX=/usr/local/
 GEARMAN_VERSION=1.1.12
 GEARMAN_SERIES=1.2
 GEARMAN_INSTALLABLE=https://launchpad.net/gearmand/${GEARMAN_SERIES}/${GEARMAN_VERSION}/+download/gearmand-${GEARMAN_VERSION}.tar.gz 
-GEARMAN_DOWNLOAD_DIR=/usr/var/tmp/
+GEARMAN_DOWNLOAD_DIR=/usr/tmp/
 
 
 #Geraman UI
-GEARMAN_UI_DIR=/usr/var/tmp/
+GEARMAN_UI_DIR=/usr/tmp/
 GEARMAN_UI_SOURCE=https://github.com/gaspaio/gearmanui.git
 COMPOSER_URL=https://getcomposer.org/installer
 GEARMAN_UI_DOCS=http://gaspaio.github.io/gearmanui
 
 #GEARMAN_MANAGER
-GEARMAN_MANAGER_DOWNLOAD_DIR=/usr/var/tmp/
+GEARMAN_MANAGER_DOWNLOAD_DIR=/usr/tmp/
 GEARMAN_MANAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
 GEARMAN_MANAGER_MASTER_BRANCH_VERSION=5.5.9
 
@@ -31,6 +31,8 @@ NC=`tput sgr0`
 ERROR="${RED}error${NC}"
 DONE="${GREEN}done${NC}"
 
+export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
+
 verify_command(){
 	if [ $1 -eq 0 ]; then
 			echo $DONE
@@ -43,15 +45,15 @@ verify_command(){
 }
 
 install_program(){
-	echo "Checking if $1 present .."
-	if which $1>/dev/null; then
+	echo "Checking if $1 present..."
+	if hash $1 2>/dev/null; then
     		echo "$1 found."
 	else
  		read -e -p "$1 doesn't exist. Do you want to install?" -i "y" ans
  		if [ "$ans" == "y" ];then
  			yum -y install $2
  		else
- 			echo "Exiting .."
+ 			echo "Exiting..."
  			exit 1;
  		fi
 	fi
@@ -94,7 +96,7 @@ check_composer(){
 			echo "Composer installed globally"
 			return;
 		else
-			echo "Cannot cnitnue without composer. Exiting .."
+			echo "Cannot cnitnue without composer. Exiting..."
 			exit 1;
 		fi
 	fi

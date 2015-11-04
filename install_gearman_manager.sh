@@ -5,7 +5,6 @@
 ################################################################################
 
 source GLOBAL
-export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
 # check if run as root
 check_root
@@ -21,12 +20,12 @@ else
 	if [ "$ans" == "y" ]; then
 		./install_php.sh
 	else
-		echo "Exiting .."
+		echo "Exiting..."
 		exit 1;
 	fi
 fi
 
-echo "checking PHP version .."
+echo "checking PHP version..."
 PHP_VERSION_FOUND=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+")
 version=$(compare_versions GEARMAN_MANAGER_MASTER_BRANCH_VERSION PHP_VERSION_FOUND)
 
@@ -41,10 +40,9 @@ if [ "$version" == "new" ]; then
 	composer install --no-dev
 else
 	#clone v2
-	echo "git clone -b v2 ${GEARMAN_MANAGER_SOURCE}"
+	git clone -b v2 ${GEARMAN_MANAGER_SOURCE}
 
 	read -e -p "You need pcntl enabled in php to use gearman manager. Press y to continue." -i "y" ans
-
 	if [ "$ans" != "y" ];then
 		exit 1;
 	fi
@@ -60,7 +58,7 @@ else
 	#Extract
 	printf "Extracting:"
 	tar -xzf php-${PHP_VERSION_FOUND}.tar.gz
-	verify_command $? "Error untarring php source .."
+	verify_command $? "Error untarring php source..."
 
 	#Delete tar ball
 	rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz

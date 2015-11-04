@@ -19,8 +19,8 @@ verify_command $? "Error cleaning up previous Gearman downloads"
 
 cd $GEARMAN_DOWNLOAD_DIR 
 
-echo "This script will now download and install Gearman version ${GEARMAN_VERSION} .."
-printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE} .. "
+echo "This script will now download and install Gearman version ${GEARMAN_VERSION}..."
+printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE}... "
 
 #Download
 
@@ -33,7 +33,7 @@ verify_command $? "Error downloading and untarring."
 rm -rf gearmand-${GEARMAN_VERSION}.tar.gz
 
 #update repositories
-yum -y update
+yum -y update boost-devel
 
 #Perisistent QUEUE
 read -p  "Now preparing configration. 
@@ -68,12 +68,12 @@ case $choiceDB in
 
 esac
 
-echo "Installing Gearman dependencies .."
+echo "Installing Gearman dependencies..."
 sudo yum -y install libevent-devel gcc-c++ boost-devel libuuid-devel gperf
 verify_command $? "Error installing Gearman dependencies"
 
 #Configure Gearman
-echo "Now configuring Gearman .."
+echo "Now configuring Gearman..."
 cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
 configure="${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/configure 
 	--prefix=${GEARMAN_INSTALL_PREFIX}
@@ -93,7 +93,7 @@ echo "Please check Gearman configuration."
 
 read -p "Press any key" a
 
-echo "Now installing gearman .."
+echo "Now installing gearman..."
 
 cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
 make

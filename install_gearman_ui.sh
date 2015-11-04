@@ -4,21 +4,19 @@
 ########################################################################
 
 source GLOBAL
-export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
 check_root
 
 cd $GEARMAN_UI_DIR
 
 #check php
-if which php>\dev\null; then
+if hash php 2>\dev\null; then
 	echo "PHP found."
 else
-	echo "PHP not found. Please install PHP first and then retry this script. Exiting."
-	exit 1;
+	./install_php.sh
 fi
 
-echo 'Checking Composer ..'
+echo 'Checking Composer...'
 if which composer>/dev/null; then
     echo "composer exists"
 else
@@ -39,7 +37,7 @@ verify_command $? "Error installing gearmanui dependencies."
 install_program "npm" "npm --enablerepo=epel"
 verify_command $? "Error installing npm."
 
-echo "Now installing bower globally .."
+echo "Now installing bower globally..."
 
 npm -g install bower
 

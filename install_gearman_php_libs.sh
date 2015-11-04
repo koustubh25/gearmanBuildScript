@@ -6,12 +6,11 @@
 ########################################################################
 
 source GLOBAL
-export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin
 
 # check if run as root
 check_root
 
-if which pecl>/dev/null; then
+if hash pecl 2>/dev/null; then
 	echo "pecl already installed."
 else
 	read -e -p "pecl not found. Do you want to install?" -i "y" ans
