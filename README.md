@@ -1,5 +1,6 @@
 # Install Gearman and related dependencies on Amazon Linux
 
+[Gearman](http://gearman.org/) is a tool used for distributed batch processing.
 ##Prerequisites
 
 All the files in this repo must be kept in the same directory
