@@ -20,6 +20,12 @@ The driver.sh file is interactive and you can skip instalation of tools you dont
 
 `./install_php.sh` will compile and install php alongwith pear, pcntl and mysql extensions as per GLOBAL
 `./install_gearman.sh` will install gearman version as mentioned in GLOBAL
+
 `./install_gearman_manager.sh` will install [Gearman manager](https://github.com/brianlmoon/GearmanManager) based on PHP version present
+
 `./install_gearman_ui.sh` will install [gearman web ui](http://gaspaio.github.io/gearmanui/)
 
+##ToDO
+
+1. Make an init script for Gearman Manager.
+2. Replace yum update with only the needed packages.
