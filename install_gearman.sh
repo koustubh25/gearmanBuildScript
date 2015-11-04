@@ -21,7 +21,6 @@ echo "This script will now download and install Gearman version ${GEARMAN_VERSIO
 printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE}... "
 
 #Download
-
 wget $GEARMAN_INSTALLABLE 
 verify_command $? "Error downloading"
 sleep 5
