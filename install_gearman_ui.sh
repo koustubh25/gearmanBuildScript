@@ -17,11 +17,7 @@ else
 fi
 
 echo 'Checking Composer...'
-if which composer>/dev/null; then
-    echo "composer exists"
-else
-	check_composer
-fi
+check_composer
 
 install_program "git" "git-core"
 
@@ -39,7 +35,9 @@ verify_command $? "Error installing npm."
 
 echo "Now installing bower globally..."
 
-npm -g install bower
+if hash bower 2>/dev/null; then
+	npm -g install bower
+fi
 
 bower install --allow-root
 verify_command $? "Error installing gearmanui."

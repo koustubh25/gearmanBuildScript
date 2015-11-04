@@ -82,7 +82,7 @@ check_root(){
 }
 
 check_composer(){
-	if which composer>/dev/null; then
+	if hash composer 2>/dev/null; then
     	echo "composer exists"
     	return;
 	else
@@ -96,7 +96,7 @@ check_composer(){
 			echo "Composer installed globally"
 			return;
 		else
-			echo "Cannot cnitnue without composer. Exiting..."
+			echo "Cannot continue without composer. Exiting..."
 			exit 1;
 		fi
 	fi

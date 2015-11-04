@@ -9,8 +9,6 @@ source GLOBAL
 # check if run as root
 check_root
 
-read -p "This script compiles the source code for gearman. Depending on the machine, it could take upto 30 minutes for the script to complete. Press any key to continue." a
-
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
 
@@ -33,7 +31,7 @@ verify_command $? "Error downloading and untarring."
 rm -rf gearmand-${GEARMAN_VERSION}.tar.gz
 
 #update repositories
-yum -y update boost-devel
+yum -y update
 
 #Perisistent QUEUE
 read -p  "Now preparing configration. 

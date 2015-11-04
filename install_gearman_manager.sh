@@ -13,7 +13,7 @@ cd ${GEARMAN_MANAGER_DOWNLOAD_DIR}
 install_program "git" "git-core"
 
 #check php version
-if which php>/dev/null; then
+if hash php 2>/dev/null; then
 	echo "PHP found."
 else
 	read -e -p "This script needs PHP. Press y to install" -i "y" ans 
@@ -27,7 +27,7 @@ fi
 
 echo "checking PHP version..."
 PHP_VERSION_FOUND=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+")
-version=$(compare_versions GEARMAN_MANAGER_MASTER_BRANCH_VERSION PHP_VERSION_FOUND)
+version=$(compare_versions $GEARMAN_MANAGER_MASTER_BRANCH_VERSION $PHP_VERSION_FOUND)
 
 rm -rf ${GearmanManager}GearmanManager
 
@@ -71,6 +71,6 @@ else
 	make install
 	verify_command $? "Error installing php pcntl"
 
-	echo "Make sure to add pcntl.so in php.ini file"
+	echo "Make sure to add absolute path of pcntl.so in php.ini file"
 
 fi
