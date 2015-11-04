@@ -1,4 +1,4 @@
-# Install Gearman and related dependencies
+# Install Gearman and related dependencies on Amazon Linux
 
 ##Prerequisites
 
