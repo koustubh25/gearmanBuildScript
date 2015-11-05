@@ -19,7 +19,7 @@ if [ "$ans" == "y" ]; then
 fi
 
 read -e -p "
-Do you want to set up Gearman Web UI?? " -i "y" ans
+Do you want to set up Gearman Web UI? " -i "y" ans
 if [ "$ans" == "y" ]; then  
 	./install_gearman_ui.sh 
 	verify_command $? "Error setting up Gearman web ui"
@@ -41,4 +41,10 @@ if [ "$ans" == "y" ]; then
 	verify_command $? "Error installing Gearman PHP libraries"
 fi
 
+printf "Now cleaning installables..."
+
+rm -rf ${GEARMAN_DOWNLOAD_DIR}gearman* ${GEARMAN_UI_DIR}gearman* ${PHP_DOWNLOAD_DIR}php-*
+echo $DONE
+
 echo "Driver script has now ended."
+
