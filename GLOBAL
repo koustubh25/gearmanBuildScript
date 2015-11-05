@@ -54,8 +54,10 @@ install_program(){
  		if [ "$ans" == "y" ];then
  			yum -y install $2
  		else
- 			echo "Exiting..."
- 			exit 1;
+ 			if [ "$3" != "y" ]; then
+ 				echo "Exiting..."
+ 				exit 1;
+ 			fi
  		fi
 	fi
 }

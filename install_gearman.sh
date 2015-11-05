@@ -100,7 +100,9 @@ verify_command $? "Failed to install Gearman.."
 
 ldconfig
 
+rm -rf gearmand-${GEARMAN_VERSION}*
+
 echo "You can start gearman by runnning the command 'gearmand'. 
-Gearman config file (${GEARMAN_INSTALL_PREFIX}etc/gearmand.conf) or check command line options gearmand -h"
+Gearman config file (${GEARMAN_CONF_FILE_DIR}/gearmand.conf) or check command line options gearmand -h"
 
 
