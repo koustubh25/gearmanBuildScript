@@ -36,7 +36,7 @@ verify_command $? "Error installing npm."
 echo "
 Now installing bower globally..."
 
-if hash bower 2>/dev/null; then
+if ! hash bower 2>/dev/null; then
 	npm -g install bower
 fi
 
