@@ -33,6 +33,8 @@ rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}.tar.gz
 
 cd php-${PHP_VERSION}
 
+sudo yum -y install libxml2-devel
+
 ./configure --prefix=/usr/local/ --enable-pcntl --with-mysql --with-pear --with-openssl
 verify_command $? "Error configuring PHP build"
 

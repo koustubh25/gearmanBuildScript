@@ -7,14 +7,14 @@ source GLOBAL
 
 check_root
 
-cd $GEARMAN_UI_DIR
-
 #check php
 if hash php 2>\dev\null; then
 	echo "PHP found."
 else
 	./install_php.sh
 fi
+
+cd $GEARMAN_UI_DIR
 
 echo 'Checking Composer...'
 check_composer
@@ -33,7 +33,8 @@ verify_command $? "Error installing gearmanui dependencies."
 install_program "npm" "npm --enablerepo=epel"
 verify_command $? "Error installing npm."
 
-echo "Now installing bower globally..."
+echo "
+Now installing bower globally..."
 
 if hash bower 2>/dev/null; then
 	npm -g install bower
