@@ -35,7 +35,7 @@ cd php-${PHP_VERSION}
 
 sudo yum -y install libxml2-devel
 
-./configure --prefix=/usr/local/ --enable-pcntl --with-mysql --with-pear --with-openssl
+./configure --prefix=${PHP_INSTALL_PREFIX} --enable-pcntl --with-mysql --with-pear --with-openssl
 verify_command $? "Error configuring PHP build"
 
 make
@@ -43,6 +43,8 @@ verify_command $? "Error building PHP "
 
 make install
 verify_command $? "Error building PHP "
+
+cp php.ini-development ${PHP_INSTALL_PREFIX}lib/php.ini
 
 rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}*
 echo "PHP ${PHP_VERSION} has now been installed ."

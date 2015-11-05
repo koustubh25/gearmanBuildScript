@@ -17,6 +17,8 @@ GEARMAN_MANAGER_DOWNLOAD_DIR=/usr/tmp/
 GEARMAN_MANAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
 GEARMAN_MANAGER_MASTER_BRANCH_VERSION=5.5.9
 
+#PHP
+PHP_INSTALL_PREFIX=/usr/local/
 PHP_SOURCE_URL=http://museum.php.net/php5/
 PHP_DOWNLOAD_DIR=/usr/tmp/
 PHP_VERSION=5.6.2
