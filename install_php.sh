@@ -44,6 +44,8 @@ verify_command $? "Error building PHP "
 make install
 verify_command $? "Error building PHP "
 
+cp php.ini-development ${PHP_INSTALL_PREFIX}lib/php.ini
+
 rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}*
 echo "PHP ${PHP_VERSION} has now been installed ."
 
