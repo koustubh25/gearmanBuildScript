@@ -55,7 +55,11 @@ install_program(){
  			yum -y install $2
  		else
  			if [ "$3" != "y" ]; then
+<<<<<<< HEAD
  				echo "Cannot continue without $1. Exiting..."
+=======
+ 				echo "Exiting..."
+>>>>>>> fd8a140189a8af2f4aff60f6536d3969f029a381
  				exit 1;
  			fi
  		fi

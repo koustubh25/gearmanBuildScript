@@ -45,8 +45,7 @@ verify_command $? "Error installing gearmanui."
 cp config.yml.dist config.yml
 verify_command $? "Error copying config files."
 
-install_program "apachectl" "httpd" "y"
 
-echo "Gearman UI successfully installed. Make sure to add ${GEARMAN_UI_DIR}gearmanui/web in the Document root of your web server.
+echo "Gearman UI successfully installed. Make sure to install a web server with php module enabled and add ${GEARMAN_UI_DIR}gearmanui/web in the Document root of your web server.
 Check ${GEARMAN_UI_DOCS} for more information."
 
