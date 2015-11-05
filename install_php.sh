@@ -7,6 +7,8 @@ source GLOBAL
 
 check_root
 
+yum -y install gcc-c++ openssl-devel
+
 #Cleanup prevous installables if exist
 rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}.tar.gz ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}
 
