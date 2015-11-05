@@ -18,10 +18,9 @@ if [ "$ans" != "y" ]; then
 	exit 1;
 fi
 
-
 #Download PHP source code
 printf "Downloading PHP source code..." 
-wget -q ${PHP_SOURCE_URL}php-${PHP_VERSION}.tar.gz -P ${PHP_DOWNLOAD_DIR}
+wget ${PHP_SOURCE_URL}php-${PHP_VERSION}.tar.gz -P ${PHP_DOWNLOAD_DIR}
 verify_command $? "Error downloading PHP source code"
 
 cd ${PHP_DOWNLOAD_DIR}
@@ -44,7 +43,7 @@ verify_command $? "Error building PHP "
 make install
 verify_command $? "Error building PHP "
 
-cp php.ini-development ${PHP_INSTALL_PREFIX}lib/php.ini
+cp php.ini-production ${PHP_INSTALL_PREFIX}lib/php.ini
 
 rm -rf ${PHP_DOWNLOAD_DIR}php-${PHP_VERSION}*
 echo "PHP ${PHP_VERSION} has now been installed ."
