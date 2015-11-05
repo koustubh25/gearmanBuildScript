@@ -54,7 +54,7 @@ else
 	cd ${PHP_SOURCE_DIR}
 
 	#Clean previous	
-	rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}
+	rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*
 
 	#Download
 	wget ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}.tar.gz
@@ -79,3 +79,4 @@ else
 	Make sure to add absolute path of pcntl.so in php.ini file"
 
 fi
+rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*
