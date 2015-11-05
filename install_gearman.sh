@@ -23,7 +23,7 @@ printf "Now downloading Gearman from ${GEARMAN_INSTALLABLE}... "
 #Download
 wget $GEARMAN_INSTALLABLE 
 verify_command $? "Error downloading"
-sleep 5
+
 printf "Extracting:"
 tar -xzf gearmand-${GEARMAN_VERSION}.tar.gz
 verify_command $? "Error downloading and untarring."
@@ -74,7 +74,8 @@ echo "Now configuring Gearman..."
 cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
 configure="${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/configure 
 	--prefix=${GEARMAN_INSTALL_PREFIX}
-	--disable-libdrizzle";
+	--disable-libdrizzle
+	--sysconfdir=$GEARMAN_CONF_FILE_DIR";
 
 if [ $choiceDB -eq 1 ]; then
 	configure="${configure} --disable-libmemcached --with-mysql"; 
