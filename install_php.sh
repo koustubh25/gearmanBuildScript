@@ -32,7 +32,7 @@ verify_command $? "Error downloading PHP source code"
 
 cd php-${PHP_VERSION}
 
-sudo yum -y install libxml2-devel
+yum -y install libxml2-devel
 
 ./configure --prefix=${PHP_INSTALL_PREFIX} --enable-pcntl --with-mysql --with-pear --with-openssl
 verify_command $? "Error configuring PHP build"

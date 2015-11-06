@@ -17,7 +17,7 @@ if hash php 2>/dev/null; then
 	echo "PHP found."
 else
 	read -e -p "
-	This script needs PHP. Press y to install" -i "y" ans 
+	This script needs PHP. Press y to install" -i "y" ans
 	if [ "$ans" == "y" ]; then
 		./install_php.sh
 	else
