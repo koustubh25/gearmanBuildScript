@@ -5,6 +5,7 @@ GEARMAN_VERSION=1.1.12
 GEARMAN_SERIES=1.2
 GEARMAN_INSTALLABLE=https://launchpad.net/gearmand/${GEARMAN_SERIES}/${GEARMAN_VERSION}/+download/gearmand-${GEARMAN_VERSION}.tar.gz 
 GEARMAN_DOWNLOAD_DIR=/usr/tmp/
+GEARMAN_USER=mv2
 
 
 #Geraman UI

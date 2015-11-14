@@ -9,6 +9,8 @@ source GLOBAL
 # check if run as root
 check_root
 
+SCRIPT_DIR=$(pwd)
+
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
 
@@ -60,6 +62,7 @@ case $choiceDB in
 		verify_command $? "Error installing memcache libraries"
 		;;
 	*) 
+		echo "Invalid option. Exiting..."
 		exit 1;
 		;;
 
@@ -80,9 +83,11 @@ configure="${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/configure
 if [ $choiceDB -eq 1 ]; then
 	configure="${configure} --disable-libmemcached --with-mysql"; 
 elif [ $choiceDB -eq 2 ]; then
-	configure="${configure} --disable-libmemcached --with-libmemcached";
-else
+	configure="${configure} --disable-mysql --with-libmemcached";
+elif [ $choiceDB -eq 3 ]; then
 	configure="${configure} --with-libmemcached --with-mysql"
+else
+	configure="${configure} --disable-libmemcached --disable-libmysql";
 fi
 
 $configure
@@ -100,9 +105,20 @@ verify_command $? "Failed to install Gearman.."
 
 ldconfig
 
+#cp gearmand.conf $GEARMAN_CONF_FILE_DIR
+
+#echo "Now installing gearman as a service..."
+
+#sed -i "s@\$GEARMAN_INSTALL_PREFIX/@${GEARMAN_INSTALL_PREFIX}@" $SCRIPT_DIR/gearmand.init
+#sed -i "s/gearman_user/$GEARMAN_USER/g" $SCRIPT_DIR/gearmand.init
+#sed -i 's:/usr/sbin/gearmand:/usr/local/sbin/gearmand:' $SCRIPT_DIR/gearmand.init
+#cp $SCRIPT_DIR/gearmand.init /etc/init.d/gearmand
+#chmod a+x /etc/init.d/gearmand
+#chkconfig gearmand on
+
 rm -rf gearmand-${GEARMAN_VERSION}*
 
-echo "You can start gearman by runnning the command 'gearmand'. 
-Gearman config file (${GEARMAN_CONF_FILE_DIR}/gearmand.conf) or check command line options gearmand -h"
+echo "You can start gearman by runnning  'sudo service gearmand start'.
+Gearman config file (${GEARMAN_CONF_FILE_DIR}/gearmand.conf). Check command line options gearmand -h"
 
 
