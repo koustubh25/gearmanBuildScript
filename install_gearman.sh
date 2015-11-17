@@ -14,7 +14,7 @@ SCRIPT_DIR=$(pwd)
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
 
-rm -rf ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION} ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}.tar.gz
+rm -rf ${GEARMAN_DOWNLOAD_DIR}/gearmand-${GEARMAN_VERSION} ${GEARMAN_DOWNLOAD_DIR}/gearmand-${GEARMAN_VERSION}.tar.gz
 verify_command $? "Error cleaning up previous Gearman downloads"
 
 cd $GEARMAN_DOWNLOAD_DIR 
@@ -74,8 +74,8 @@ verify_command $? "Error installing Gearman dependencies"
 
 #Configure Gearman
 echo "Now configuring Gearman..."
-cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
-configure="${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}/configure 
+cd ${GEARMAN_DOWNLOAD_DIR}/gearmand-${GEARMAN_VERSION}
+configure="${GEARMAN_DOWNLOAD_DIR}/gearmand-${GEARMAN_VERSION}/configure 
 	--prefix=${GEARMAN_INSTALL_PREFIX}
 	--disable-libdrizzle
 	--sysconfdir=$GEARMAN_CONF_FILE_DIR";
@@ -98,23 +98,21 @@ read -p "Press any key" a
 
 echo "Now installing gearman..."
 
-cd ${GEARMAN_DOWNLOAD_DIR}gearmand-${GEARMAN_VERSION}
+cd ${GEARMAN_DOWNLOAD_DIR}/gearmand-${GEARMAN_VERSION}
 make
 make install
 verify_command $? "Failed to install Gearman.."
 
 ldconfig
 
-#cp gearmand.conf $GEARMAN_CONF_FILE_DIR
+cp $SCRIPT_DIR/gearmand.conf $GEARMAN_CONF_FILE_DIR
 
-#echo "Now installing gearman as a service..."
-
-#sed -i "s@\$GEARMAN_INSTALL_PREFIX/@${GEARMAN_INSTALL_PREFIX}@" $SCRIPT_DIR/gearmand.init
-#sed -i "s/gearman_user/$GEARMAN_USER/g" $SCRIPT_DIR/gearmand.init
-#sed -i 's:/usr/sbin/gearmand:/usr/local/sbin/gearmand:' $SCRIPT_DIR/gearmand.init
-#cp $SCRIPT_DIR/gearmand.init /etc/init.d/gearmand
-#chmod a+x /etc/init.d/gearmand
-#chkconfig gearmand on
+sed -i "s@\$GEARMAN_INSTALL_PREFIX/@${GEARMAN_INSTALL_PREFIX}@" $SCRIPT_DIR/gearmand.init
+sed -i "s/gearman_user/$GEARMAN_USER/g" $SCRIPT_DIR/gearmand.init
+sed -i 's:/usr/sbin/gearmand:/usr/local/sbin/gearmand:' $SCRIPT_DIR/gearmand.init
+cp $SCRIPT_DIR/gearmand.init /etc/init.d/gearmand
+chmod a+x /etc/init.d/gearmand
+chkconfig gearmand on
 
 rm -rf gearmand-${GEARMAN_VERSION}*
 

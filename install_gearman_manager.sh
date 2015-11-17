@@ -79,4 +79,9 @@ else
 	Make sure to add absolute path of pcntl.so in php.ini file"
 
 fi
+
+echo "Adding Gearman manager as service"
+
+
+
 rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*

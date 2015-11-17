@@ -17,6 +17,7 @@ GEARMAN_UI_DOCS=http://gaspaio.github.io/gearmanui
 GEARMAN_MANAGER_DOWNLOAD_DIR=/usr/tmp/
 GEARMAN_MANAGER_SOURCE=https://github.com/brianlmoon/GearmanManager
 GEARMAN_MANAGER_MASTER_BRANCH_VERSION=5.5.9
+GEARMAN_MANAGER_CONF_FILE=/usr/mv2/
 
 #PHP
 PHP_INSTALL_PREFIX=/usr/local/
