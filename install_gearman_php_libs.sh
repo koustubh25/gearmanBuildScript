@@ -32,6 +32,7 @@ echo "Now installing gearman PHP libraries"
 yum -y install autoconf
 
 pecl install gearman
-verify_command $? "Error installing PHP gearman libraries"
-echo "
-Gearman PHP libraries succesfully installed. Don't forget to add absolute path of gearman.so in php.ini. Verify 'php --ini' doesn't throw any errors."
+verify_command $? "Error installing PHP gearman libraries" 0
+read -p "
+Gearman PHP libraries succesfully installed. Don't forget to add absolute path of gearman.so in php.ini. Verify 'php --ini' doesn't throw any errors.
+Press any key to continue" a

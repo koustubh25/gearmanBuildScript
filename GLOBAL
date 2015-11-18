@@ -43,11 +43,15 @@ export PATH=$PATH:${GEARMAN_INSTALL_PREFIX}bin:${GEARMAN_INSTALL_PREFIX}mysql/bi
 verify_command(){
 	if [ $1 -eq 0 ]; then
 			echo $DONE
-		else
+	else
+		if [ $3 -ne 0 ]; then
 			echo $ERROR
 			echo $2
 			exit 1;
+		else
+			echo "Check if already Installed"
 		fi
+	fi
 
 }
 

@@ -4,12 +4,11 @@
 #pcntl
 ################################################################################
 
-source GLOBAL
-
 # check if run as root
 check_root
 
 SCRIPT_DIR=$(pwd)
+source $SCRIPT_DIR/../GLOBAL
 
 install_program "git" "git-core"
 
@@ -20,7 +19,7 @@ else
 	read -e -p "
 	This script needs PHP. Press y to install" -i "y" ans
 	if [ "$ans" == "y" ]; then
-		./install_php.sh
+		source $SCRIPT_DIR/../install_php.sh
 	else
 		echo "Exiting..."
 		exit 1;
@@ -81,6 +80,8 @@ else
 
 fi
 
+source $SCRIPT_DIR/../install_gearman_php_libs.sh
+
 echo "Adding Gearman manager as service"
 
 sed -i "s@GEARMAN_MANAGER_DOWNLOAD_DIR/@${GEARMAN_MANAGER_DOWNLOAD_DIR}@" ${SCRIPT_DIR}/gearman_manager.init
@@ -91,10 +92,13 @@ sed -i "s@GEARMAN_MANAGER_DOWNLOAD_DIR/@${GEARMAN_MANAGER_DOWNLOAD_DIR}@" ${SCRI
 sed -i "s@GEARMAN_MANAGER_LOG/@${GEARMAN_MANAGER_LOG}@" ${SCRIPT_DIR}/gearman_manager_conf.ini
 
 cp ${SCRIPT_DIR}/gearman_manager_conf.ini ${GEARMAN_MANAGER_CONF}
+verify_command $? "Error copying gearman manager conf file"
+
 cp ${SCRIPT_DIR}/gearman_manager.init /etc/init.d/gearman-manager
+verify_command $? "Error copying gearman manager init script"
 
 chmod +x /etc/init.d/gearman-manager
 
-echo "You can now run 'sudo service gearman-manager start' if pcntl has been enabled in php"
+echo "You can now run 'sudo service gearman-manager start' if pcntl has been enabled in php and PHP gearman libraries are installed"
 
 rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*
