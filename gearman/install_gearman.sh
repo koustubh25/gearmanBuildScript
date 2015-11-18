@@ -3,7 +3,7 @@
 #This script will install Gearman and its dependencies
 ########################################################
 
-SCRIPT_DIR=$(pwd)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../GLOBAL
 
 # check if run as root

@@ -2,7 +2,7 @@
 
 #Driver Script for Setting up Gearman and related tools on Amazon Linux
 
-source GLOBAL
+source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/GLOBAL
 
 # check if run as root
 if [ "$(id -u)" != "0" ]; then
@@ -21,7 +21,7 @@ choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
 clear
 
-current_dir=$(pwd)
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 for choice in $choices
 do

@@ -4,7 +4,7 @@
 #pcntl in PHP
 ################################################################################
 
-SCRIPT_DIR=$(pwd)
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/../GLOBAL
 
 # check if run as root
@@ -101,6 +101,6 @@ verify_command $? "Error copying gearman manager init script"
 
 chmod +x /etc/init.d/gearman-manager
 
-echo "You can now run 'sudo service gearman-manager start' if pcntl has been enabled in php and PHP gearman libraries are installed"
+echo "You can now run 'sudo service gearman-manager start' if pcntl has been enabled in php and PHP gearman libraries are installed. Please run test.php from test folder"
 
 rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*

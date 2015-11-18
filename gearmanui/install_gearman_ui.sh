@@ -3,7 +3,7 @@
 #This script installs geramanui from https://github.com/gaspaio/gearmanui
 ########################################################################
 
-source $(pwd)/../GLOBAL
+source "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/../GLOBAL
 
 check_root
 
