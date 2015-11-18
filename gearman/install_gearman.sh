@@ -1,8 +1,7 @@
 #!/bin/bash
-###############################################################
-#This script will install the following alongwith its dependencies
-# Gearman
-######################################################################
+########################################################
+#This script will install Gearman and its dependencies
+########################################################
 
 SCRIPT_DIR=$(pwd)
 source $SCRIPT_DIR/../GLOBAL

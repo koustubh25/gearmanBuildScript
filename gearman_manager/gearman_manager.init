@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # Gearman manager init script
-### BEGIN INIT INFO
-# Description:       Enable gearman manager daemon
-### END INIT INFO
+# Description: Enable gearman manager daemon
 
 # Source function library.
 . /etc/rc.d/init.d/functions
