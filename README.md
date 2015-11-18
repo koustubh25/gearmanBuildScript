@@ -81,4 +81,5 @@ The same can also be seen through gearmanui
 
 ##ToDo
 
+1. ~~Add init scripts for `gearmand` and `gearman-manager`.~~
 2. Replace yum update with only the needed packages.
