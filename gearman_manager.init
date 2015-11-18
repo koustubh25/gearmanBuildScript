@@ -12,27 +12,42 @@
 # Description:       Enable gearman manager daemon
 ### END INIT INFO
 
+
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-export PATH=$PATH:/usr/local/bin/
+export PATH=/usr/local/bin:$PATH
+
 ##PATH##
-DAEMON=/usr/tmp/GearmanManager/bin/pecl_manager.php
-PIDDIR=/var/run
+DAEMON=GEARMAN_MANAGER_DOWNLOAD_DIR/GearmanManager/bin/pecl_manager.php
+PIDDIR=/var/run/gearman_manager
 PIDFILE=${PIDDIR}/gearman_manager.pid
-LOGFILE=/home/mv2/gearman-manager.log
-CONFIGDIR=/usr/local/etc
-GEARMAN_MANAGER_USER=mv2
-PARAMS="-c ${CONFIGDIR}/gearman_manager_conf.ini"
+CONFIG_FILE=GEARMAN_MANAGER_CONF/gearman_manager_conf.ini
+USER=GEARMAN_MANAGER_USER/
+
+PARAMS="-c ${CONFIG_FILE}"
+sysconf=/usr/local/etc/sysconfig/gearman-manager
+
+if [ -f @sysconf@ ]; then
+        . @sysconf@
+fi
+
+[ -z "${PIDFILE}" ] && pidfile="${prefix}${pidfile}"
+[ -z "${LOCKFILE}" ] && lockfile="${prefix}/var/lock/subsys/gearman-manager"
+
 
 RETVAL=0
 
 start() {
         echo -n $"Starting gearman-manager: "
+        if ! test -d ${PIDDIR}
+        then
+          mkdir ${PIDDIR}
+          chown ${USER} ${PIDDIR}
+        fi
         daemon --pidfile=$PIDFILE $DAEMON \
             -P $PIDFILE \
-            -l $LOGFILE \
-            -u $GEARMAN_MANAGER_USER \
+            -u $USER \
             -d \
             $PARAMS
         RETVAL=$?

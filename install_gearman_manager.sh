@@ -9,6 +9,7 @@ source GLOBAL
 # check if run as root
 check_root
 
+SCRIPT_DIR=$(pwd)
 
 install_program "git" "git-core"
 
@@ -82,6 +83,18 @@ fi
 
 echo "Adding Gearman manager as service"
 
+sed -i "s@GEARMAN_MANAGER_DOWNLOAD_DIR/@${GEARMAN_MANAGER_DOWNLOAD_DIR}@" ${SCRIPT_DIR}/gearman_manager.init
+sed -i "s@GEARMAN_MANAGER_CONF/@${GEARMAN_MANAGER_CONF}@" ${SCRIPT_DIR}/gearman_manager.init
+sed -i "s@GEARMAN_MANAGER_USER/@${GEARMAN_MANAGER_USER}@"  ${SCRIPT_DIR}/gearman_manager.init
 
+sed -i "s@GEARMAN_MANAGER_DOWNLOAD_DIR/@${GEARMAN_MANAGER_DOWNLOAD_DIR}@" ${SCRIPT_DIR}/gearman_manager_conf.ini
+sed -i "s@GEARMAN_MANAGER_LOG/@${GEARMAN_MANAGER_LOG}@" ${SCRIPT_DIR}/gearman_manager_conf.ini
+
+cp ${SCRIPT_DIR}/gearman_manager_conf.ini ${GEARMAN_MANAGER_CONF}
+cp ${SCRIPT_DIR}/gearman_manager.init /etc/init.d/gearman-manager
+
+chmod +x /etc/init.d/gearman-manager
+
+echo "You can now run 'sudo service gearman-manager start' if pcntl has been enabled in php"
 
 rm -rf ${PHP_SOURCE_URL}php-${PHP_VERSION_FOUND}*

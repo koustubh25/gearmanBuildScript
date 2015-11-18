@@ -4,12 +4,13 @@
 # Gearman
 ######################################################################
 
-source GLOBAL
+
 
 # check if run as root
 check_root
 
 SCRIPT_DIR=$(pwd)
+source $SCRIPT_DIR/../GLOBAL
 
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
