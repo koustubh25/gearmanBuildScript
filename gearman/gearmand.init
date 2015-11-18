@@ -18,10 +18,10 @@
 # Description: Gearman is a distributed job system.
 ### END INIT INFO
 
-sysconf=/usr/local/etc/sysconfig/gearmand
-gearmand=/usr/local/sbin/gearmand
+sysconf=$GEARMAN_INSTALL_PREFIX/etc/sysconfig/gearmand
+gearmand=$GEARMAN_INSTALL_PREFIX/sbin/gearmand
 prog=gearmand
-gu=mv2
+gu=gearman_user
 pidfile=/var/run/gearmand.pid
 
 # Source function library.
