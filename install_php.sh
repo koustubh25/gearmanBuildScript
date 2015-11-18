@@ -3,7 +3,7 @@
 #installing PHP as per CONFIG file
 ################################ 
 
-source GLOBAL
+#source GLOBAL
 
 check_root
 

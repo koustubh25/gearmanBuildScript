@@ -5,7 +5,7 @@
 # php gearman libraries
 ########################################################################
 
-source GLOBAL
+#source GLOBAL
 
 # check if run as root
 check_root

@@ -4,13 +4,11 @@
 # Gearman
 ######################################################################
 
-
+SCRIPT_DIR=$(pwd)
+source $SCRIPT_DIR/../GLOBAL
 
 # check if run as root
 check_root
-
-SCRIPT_DIR=$(pwd)
-source $SCRIPT_DIR/../GLOBAL
 
 #Remove if installable exists
 echo "Removing existing installables if present in ${GEARMAN_DOWNLOAD_DIR}"
@@ -36,11 +34,7 @@ rm -rf gearmand-${GEARMAN_VERSION}.tar.gz
 yum -y update
 
 #Perisistent QUEUE
-read -p  "Now preparing configration. 
-Enter you preferred Persistent queue libraries to install(1) 
-1. MySQL 
-2. Memcached 
-3. Both " choiceDB
+choiceDB=$1;
 case $choiceDB in
     "1")
     	install_program "mysql" "mysql" 

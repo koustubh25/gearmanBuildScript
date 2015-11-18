@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Driver Script for Setting up Gearman and related tools on Amazon Linux
+
 source GLOBAL
 
 # check if run as root
@@ -8,35 +10,47 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+yum -y install dialog
 
-read -e -p "
-Will the Gearman Job server run on this machine? This is necessary even if you wish to use this machine as just a gearman client. " -i "y" ans
-if [ "$ans" == "y" ]; then  
-	./install_gearman.sh
-	verify_command $? "Error installing Gearman"
-fi
+cmd=(dialog --title "Setting up Gearman and related tools on Amazon Linux" --separate-output --checklist "Select items you want to set up:" 22 76 16)
+options=(1 "Gearman Server with MySql as Persistent queue" on    
+         2 "Gearman Server with Memcache as Persistent queue" off
+         3 "Gearman Manager" on
+         4 "Gearman UI" on)
+choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 
-read -e -p "
-Do you want to set up Gearman Web UI? " -i "y" ans
-if [ "$ans" == "y" ]; then  
-	./install_gearman_ui.sh 
-	verify_command $? "Error setting up Gearman web ui"
-fi
+clear
 
+current_dir=$(pwd)
 
-read -e -p "
-Will the Gearman Workers run here?
-(If this machine only runs as a Job Server, no need to install Gearman Manager) " -i "y" ans
-if [ "$ans" == "y" ]; then 
-	./install_gearman_manager.sh
-	verify_command $? "Error installing Gearman"
-fi
-
-read -e -p "
-Do you want to install PHP libraries? " -i "y" ans
-if [ "$ans" == "y" ]; then 
-	./install_gearman_php_libs.sh
-	verify_command $? "Error installing Gearman PHP libraries"
-fi
+for choice in $choices
+do
+    case $choice in
+        1)
+        	echo "Now installing Geraman with Mysql..."
+        	cd $current_dir/gearman
+            ./install_gearman.sh 1
+			verify_command $? "Error installing Gearman"
+            ;;
+        2)
+        	echo "Now installing Geraman with Memcache..."
+            cd $current_dir/gearman
+            ./install_gearman.sh 2
+			verify_command $? "Error installing Gearman"
+            ;;
+        3)
+            echo "Now installing Geraman Manager..."
+            cd $current_dir/gearman_manager
+            ./install_gearman_manager.sh
+			verify_command $? "Error installing Gearman Manager"
+            ;;
+        4)
+            echo "Now setting up Gearman UI..."
+            cd $current_dir/gearmanui
+            ./install_gearman_ui.sh 
+			verify_command $? "Error setting up Gearman web ui"
+            ;;
+    esac
+done
 
 echo "Driver script has now ended."

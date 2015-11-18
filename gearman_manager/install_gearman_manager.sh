@@ -1,14 +1,14 @@
 #!/bin/bash
 ################################################################################
-#This script installs geramanui from https://github.com/brianlmoon/GearmanManager
-#pcntl
+#This script installs Gearman Ganager from https://github.com/brianlmoon/GearmanManager
+#pcntl in PHP
 ################################################################################
-
-# check if run as root
-check_root
 
 SCRIPT_DIR=$(pwd)
 source $SCRIPT_DIR/../GLOBAL
+
+# check if run as root
+check_root
 
 install_program "git" "git-core"
 
@@ -75,8 +75,8 @@ else
 	make install
 	verify_command $? "Error installing php pcntl"
 
-	echo "
-	Make sure to add absolute path of pcntl.so in php.ini file"
+	read -p "
+	Please add pcntl.so in php.ini file" a
 
 fi
 
@@ -91,9 +91,11 @@ sed -i "s@GEARMAN_MANAGER_USER/@${GEARMAN_MANAGER_USER}@"  ${SCRIPT_DIR}/gearman
 sed -i "s@GEARMAN_MANAGER_DOWNLOAD_DIR/@${GEARMAN_MANAGER_DOWNLOAD_DIR}@" ${SCRIPT_DIR}/gearman_manager_conf.ini
 sed -i "s@GEARMAN_MANAGER_LOG/@${GEARMAN_MANAGER_LOG}@" ${SCRIPT_DIR}/gearman_manager_conf.ini
 
+echo "Copying Gearman Manager conf file"
 cp ${SCRIPT_DIR}/gearman_manager_conf.ini ${GEARMAN_MANAGER_CONF}
 verify_command $? "Error copying gearman manager conf file"
 
+echo "Copying Gearman Manager init script"
 cp ${SCRIPT_DIR}/gearman_manager.init /etc/init.d/gearman-manager
 verify_command $? "Error copying gearman manager init script"
 
