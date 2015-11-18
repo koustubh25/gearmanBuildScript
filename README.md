@@ -76,7 +76,7 @@ fetch_url	    0	0	3
 The same can also be seen through gearmanui
 
 ###3. Gearman UI
-1. Once, you have followed the post installation steps, check the config file in `${GEARMAN_UI_DIR}`/gearmanui/config.yml. By default the UI points to gearman server on localhost. 
+1. Once, you have followed the post installation steps, check the config file in `${GEARMAN_UI_DIR}`/gearmanui/config.yml - refer `GLOBAL`. By default the UI points to gearman server on localhost. 
 2. Once you hit the url in the browser, you should be able to see the same thing as the telnet interface.
 
 ##ToDo
